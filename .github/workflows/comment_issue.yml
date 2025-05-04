@@ -1,0 +1,27 @@
+name: Create comment on new issues
+
+on:
+    issues:
+        types: [opened] # запускай этот workflow если кто-то откроет новый issue
+jobs:
+    comment-with-action:
+        runs-on: ubuntu-latest # где запускается в какой машине
+        steps:
+            - name: "dump github context" # название 
+              run: echo '${{ toJSON(github.event) }}' | jq # какой комманду использует
+              shell: bash # какой шел используется для этого
+    comment-with-api:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Create comment with API
+              run: |
+                gh api -X POST \
+                    http://api.github.com/repo/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
+                    -f body='
+                    Comment but from the API call not action
+                    '
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                ORGANIZATION: ${{ github.event.organization.login }}
+                REPOSITORY: ${{ github.event.repository.name }}
+                ISSUE_NUMBER: ${{ github.event.issue.number }}
