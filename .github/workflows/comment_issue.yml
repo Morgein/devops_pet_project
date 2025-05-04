@@ -21,7 +21,7 @@ jobs:
                     Comment but from the API call not action
                     '
               env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                ORGANIZATION: ${{ github.event.organization.login }}
-                REPOSITORY: ${{ github.event.repository.name }}
-                ISSUE_NUMBER: ${{ github.event.issue.number }}
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Он даёт твоему action'у право делать запросы к GitHub API от имени репозитория (например, чтобы создать комментарий).
+                ORGANIZATION: ${{ github.event.organization.login }} # Если репозиторий личный (в твоём профиле), этой переменной может не быть. В этом случае лучше использовать github.repository_owner.
+                REPOSITORY: ${{ github.event.repository.name }} # Это название репозитория, например, devops_pet_project.
+                ISSUE_NUMBER: ${{ github.event.issue.number }} # то номер только что созданного issue, например: #3, #42, и т. д.
