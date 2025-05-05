@@ -1,5 +1,5 @@
 import pytest
-from app.main import app  # Импортируем Flask-приложение
+from app.main import app
 
 @pytest.fixture
 def client():
